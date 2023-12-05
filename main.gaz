@@ -1,0 +1,42 @@
+procedure ask_for_valid_input(var integer take) returns integer {
+    character newline = '\n';
+    "How many sticks do you want to take (1 or 2)?\t" -> std_output;
+    take <- std_input;
+    newline -> std_output;
+    if (take < 1 or take > 2) {
+        call ask_for_valid_input(take);
+    }
+    return take;
+}
+
+procedure main() returns integer {
+    integer sticks = 21;
+    boolean game_over = false;
+    loop while (not game_over) {
+        integer take;
+        "There are " -> std_output;
+        sticks -> std_output;
+        " sticks left.\n" -> std_output;
+        call ask_for_valid_input(take);
+        sticks = sticks - take;
+        sticks -> std_output;
+        if (sticks <= 0) {
+            game_over = true;
+        } else {
+            integer computer_take = 3 - take;
+            "There are " || as<character>(sticks) || " sticks left.\n" -> std_output;
+            "The computer takes " || as<character>(computer_take) || " sticks.\n" -> std_output;
+            sticks = sticks - computer_take;
+            if (sticks <= 0) {
+                game_over = true;
+            }
+        }
+    }
+    if (sticks <= 0) {
+        "You lose.\n" -> std_output;
+    } else {
+        "You win.\n" -> std_output;
+    }
+    "Thank you for playing.\n" -> std_output;
+    return 0;
+}
